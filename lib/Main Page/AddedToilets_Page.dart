@@ -40,7 +40,14 @@ class Addedtoilets_Page extends StatelessWidget {
                         margin: EdgeInsets.symmetric(
                             vertical: screenHeight * 0.01),
                         decoration: BoxDecoration(
-                          color: AppColors.contcolor1.withOpacity(0.6),
+                          gradient: LinearGradient(
+                            colors: [
+                              AppColors.gradientcolor1.withOpacity(0.4),
+                              AppColors.gradientcolor2.withOpacity(0.4),
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Padding(
@@ -158,24 +165,24 @@ class Addedtoilets_Page extends StatelessWidget {
                                           }).toList(),
                                         ),
                                         SizedBox(height: screenHeight * 0.01),
-                                        Row(
-                                          children: [
-                                            _buildActionButton(
-                                              label: 'Call now',
-                                              onTap: () {},
-                                              screenWidth: screenWidth,
-                                              screenHeight: screenHeight,
-                                            ),
-                                            SizedBox(width: screenWidth * 0.01),
-                                            _buildActionButton(
-                                              label: 'Get Directions',
-                                              onTap: () {},
-                                              isPrimary: true,
-                                              screenWidth: screenWidth,
-                                              screenHeight: screenHeight,
-                                            ),
-                                          ],
-                                        ),
+                                        // Row(
+                                        //   children: [
+                                        //     _buildActionButton(
+                                        //       label: 'Call now',
+                                        //       onTap: () {},
+                                        //       screenWidth: screenWidth,
+                                        //       screenHeight: screenHeight,
+                                        //     ),
+                                        //     SizedBox(width: screenWidth * 0.01),
+                                        //     _buildActionButton(
+                                        //       label: 'Get Directions',
+                                        //       onTap: () {},
+                                        //       isPrimary: true,
+                                        //       screenWidth: screenWidth,
+                                        //       screenHeight: screenHeight,
+                                        //     ),
+                                        //   ],
+                                        // ),
                                       ],
                                     ),
                                   ),
@@ -183,7 +190,7 @@ class Addedtoilets_Page extends StatelessWidget {
                                 ],
                               ),
                               SizedBox(height: 10,),
-                              SizedBox(height: 35,
+                              SizedBox(height: 40,
                                 child: CustomButton4(
                                   style: TextStyles.Montserratbold1,
                                   backgroundColor: AppColors.contcolor1,

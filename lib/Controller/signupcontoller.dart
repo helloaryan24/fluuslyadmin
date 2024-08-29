@@ -27,39 +27,35 @@ class singupcontoller extends GetxController {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
     String confirmPassword = confirmPasswordController.text.trim();
-              Get.toNamed('/Otpverification_Screen',
-                  // arguments: {'email': email}
-              );
-
-    //
-    // if (username.isEmpty ||
-    //     email.isEmpty ||
-    //     password.isEmpty ||
-    //     confirmPassword.isEmpty) {
-    //   showEmptyFieldDialog();
-    // } else if (username.length <= 5) {
-    //   showInvalidUsernameLengthDialog();
-    // } else if (!EmailValidator.validate(email)) {
-    //   showInvalidEmailDialog();
-    // } else if (password.length < 8) {
-    //   showInvalidPasswordLengthDialog();
-    // } else if (!containsUppercaseLetter(password)) {
+    if (username.isEmpty ||
+        email.isEmpty ||
+        password.isEmpty ||
+        confirmPassword.isEmpty) {
+      showEmptyFieldDialog();
+    } else if (username.length <= 5) {
+      showInvalidUsernameLengthDialog();
+    } else if (!EmailValidator.validate(email)) {
+      showInvalidEmailDialog();
+    } else if (password.length < 8) {
+      showInvalidPasswordLengthDialog();
+    }
+    // else if (!containsUppercaseLetter(password)) {
     //   showMissingUppercaseLetterDialog();
     // } else if (!containsSpecialCharacter(password)) {
     //   showMissingSpecialCharacterDialog();
-    // } else if (password != confirmPassword) {
-    //   showPasswordMismatchDialog();
-    // } else {
-    //   // await AllApiFaction().signUp(username, email, password, confirmPassword);
     // }
+    else if (password != confirmPassword) {
+      showPasswordMismatchDialog();
+    } else {
+      print(username);
+      print(email);
+      print(password);
+      await AllApiFaction().Signupapi(username, email, password);
+    }
   }
 
   void signup() {
     Get.back(); // Navigate to the previous page
-  }
-
-  void signupdone() {
-    Get.offAllNamed('/BottomBar_Page'); // Navigate to bottom bar page
   }
 
 

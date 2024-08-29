@@ -7,6 +7,7 @@ import '../All_Custom_Faction/All_Widget.dart';
 import '../All_Custom_Faction/Colors.dart';
 import '../All_Custom_Faction/Image.dart';
 import '../All_Custom_Faction/TextStyle.dart';
+import '../All_Custom_Faction/shared_preferences_Page.dart';
 import '../Controller/PersonContoller.dart';
 
 class Profile_Page extends StatelessWidget {
@@ -38,20 +39,20 @@ class Profile_Page extends StatelessWidget {
                   "Lena Doe",
                   style: TextStyles.Montserratbold10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Update profile picture",
-                      style: TextStyles.MontserratSemibold3,
-                    ),
-                    SizedBox(width: 10),
-                    Icon(
-                      Icons.camera_alt_outlined,
-                      color: AppColors.contcolor1,
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Text(
+                //       "Update profile picture",
+                //       style: TextStyles.MontserratSemibold3,
+                //     ),
+                //     SizedBox(width: 10),
+                //     Icon(
+                //       Icons.camera_alt_outlined,
+                //       color: AppColors.contcolor1,
+                //     ),
+                //   ],
+                // ),
                 SizedBox(height: 50),
                 Obx(() => buildInputField1(
                   hintText: "Business name",
@@ -71,15 +72,15 @@ class Profile_Page extends StatelessWidget {
                     // controller.searchLocation(query);
                   },
                 )),
-                SizedBox(height: 10),
-                buildInputField1(
-                  hintText: "Date of birth",
-                  controller: controller.searchController.value,
-                  keyboardType: TextInputType.name,
-                  onChanged: (query) {
-                    // controller.searchLocation(query);
-                  },
-                ),
+                // SizedBox(height: 10),
+                // buildInputField1(
+                //   hintText: "Date of birth",
+                //   controller: controller.searchController.value,
+                //   keyboardType: TextInputType.name,
+                //   onChanged: (query) {
+                //     // controller.searchLocation(query);
+                //   },
+                // ),
                 SizedBox(height: 10),
                 buildInputField1(
                   hintText: "Contact no",
@@ -92,7 +93,7 @@ class Profile_Page extends StatelessWidget {
                 SizedBox(height: 30),
                 CustomButton3(
                   text: 'Support',
-                  backgroundColor: AppColors.gradientcolor2,
+                  backgroundColor: AppColors.gradientcolor1.withOpacity(0.7),
                   onTap: () {
                     // handle button tap
                     Get.toNamed('/Support_Page');
@@ -103,7 +104,7 @@ class Profile_Page extends StatelessWidget {
                 SizedBox(height: 10),
                 CustomButton3(
                   text: 'Messages',
-                  backgroundColor: AppColors.gradientcolor2,
+                  backgroundColor: AppColors.gradientcolor1.withOpacity(0.7),
                   onTap: () {
                     // handle button tap
                     Get.toNamed('/Message_Page');
@@ -111,11 +112,15 @@ class Profile_Page extends StatelessWidget {
                   style: TextStyles.MontserratMedium3,
                   assetImage: Images.Messageslogo, // specify your asset image path
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 20),
+
                 Align(
                   alignment: Alignment.centerLeft,
                   child: GestureDetector(
                     onTap: () {
+                      UserPreferences.clearAllData();
+                      Get.offAndToNamed('/Welcomeback_Page'); // Navigate to On_boarding_Page if not logged in
+
                       // controller.logout();
                     },
                     child: Text(

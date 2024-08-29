@@ -46,6 +46,7 @@ class UserPreferences {
   }
 
   static Future<void> clearAllData() async {
+    print("Yes");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
   }

@@ -151,6 +151,12 @@ class TextStyles {
       fontFamily: 'Montserratbold',
       color: AppColors.greycolor);
 
+  static const TextStyle Montserratbold11 = TextStyle(
+      fontSize: 23.0,
+      fontFamily: 'Montserratbold',
+      color: AppColors.whitecolor);
+
+
 
   static const TextStyle MontserratSemibold1 = TextStyle(
       fontSize: 10.0,
@@ -178,7 +184,7 @@ class TextStyles {
 
 
   static const TextStyle MontserratSemibold5 = TextStyle(
-      fontSize:15.0,
+      fontSize:20.0,
       fontFamily: 'MontserratSemibold',
       color: Colors.red);
   static const TextStyle MontserratSemibold6 = TextStyle(

@@ -17,7 +17,8 @@ class Dashboard_Page extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           Positioned(
-            top: 70, // Adjust this value according to your design
+            top: 70,
+            // Adjust this value according to your design
             left: 0,
             right: 0,
             bottom: 0,
@@ -26,7 +27,8 @@ class Dashboard_Page extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 20), // Adjust this value according to your design
+                  SizedBox(height: 20),
+                  // Adjust this value according to your design
                   Row(
                     children: [
                       Expanded(
@@ -99,33 +101,34 @@ class Dashboard_Page extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  _buildGaugeSection('Total ratings'),
+                  _buildGaugeContainer('Total ratings', 80),
                   const SizedBox(height: 15),
-                  _buildGaugeSection('Total reviews'),
+                  _buildGaugeContainer('Total reviews', 90),
                   const SizedBox(height: 15),
-                  _buildGaugeSection('Total Visits'),
+                  _buildGaugeContainer('Total Visits', 70),
                   const SizedBox(height: 20),
                   CustomButton3(
                     text: 'Add toilet',
-                    backgroundColor: AppColors.gradientcolor2,
+                    backgroundColor: AppColors.gradientcolor1.withOpacity(0.7),
                     onTap: () {
                       // handle button tap
                       Get.toNamed('/Addnewtoilet_Page');
                     },
                     style: TextStyles.MontserratMedium3,
-                    assetImage: Images.wcminilogo, // specify your asset image path
+                    assetImage:
+                        Images.wcminilogo, // specify your asset image path
                   ),
                   const SizedBox(height: 10),
                   CustomButton3(
                     text: 'Business details',
-                    backgroundColor: AppColors.gradientcolor2,
+                    backgroundColor: AppColors.gradientcolor1.withOpacity(0.7),
                     onTap: () {
                       Get.toNamed('/Businessdetails_Page');
                     },
                     style: TextStyles.MontserratMedium3,
-                    assetImage: Images.Businessdetails, // specify your asset image path
+                    assetImage:
+                        Images.Businessdetails, // specify your asset image path
                   ),
-
                 ],
               ),
             ),
@@ -138,7 +141,7 @@ class Dashboard_Page extends StatelessWidget {
               width: double.infinity,
               color: AppColors.whitecolor,
               child: Padding(
-                padding: const EdgeInsets.only(top: 10,bottom: 0),
+                padding: const EdgeInsets.only(top: 10, bottom: 0),
                 child: Text(
                   'Dashboard',
                   style: TextStyles.Montserratbold,
@@ -151,78 +154,91 @@ class Dashboard_Page extends StatelessWidget {
     );
   }
 
-  Widget _buildGaugeSection(String label) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-          height: 80,
-          width: 80,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                spreadRadius: 2,
-                blurRadius: 10,
-                offset: Offset(0, 0),
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(1.0),
-            child: SfRadialGauge(
-              axes: <RadialAxis>[
-                RadialAxis(
-                  minimum: 0,
-                  maximum: 100,
-                  showLabels: false,
-                  showTicks: false,
-                  startAngle: 270,
-                  endAngle: 270,
-                  axisLineStyle: AxisLineStyle(
-                    thickness: 1,
-                    color: Colors.white,
-                    thicknessUnit: GaugeSizeUnit.factor,
-                  ),
-                  pointers: <GaugePointer>[
-                    RangePointer(
-                      value: 100,
-                      width: 0.2,
-                      color: AppColors.circlecolor,
-                      pointerOffset: 0.1,
-                      cornerStyle: CornerStyle.bothFlat,
-                      sizeUnit: GaugeSizeUnit.factor,
-                    ),
-                    RangePointer(
-                      value: 80,
-                      width: 0.2,
-                      color: AppColors.gradientcolor1,
-                      pointerOffset: 0.1,
-                      cornerStyle: CornerStyle.bothCurve,
-                      sizeUnit: GaugeSizeUnit.factor,
-                    ),
-                  ],
-                  annotations: <GaugeAnnotation>[
-                    GaugeAnnotation(
-                      widget: Text(
-                        '80',
-                        style: TextStyles.Montserratbold2,
-                      ),
-                    ),
-                  ],
+  Widget _buildGaugeContainer(String label, double value) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            AppColors.gradientcolor1.withOpacity(0.4),
+            AppColors.gradientcolor2.withOpacity(0.4),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+      child: Row(
+        children: [
+          Container(
+            height: 80,
+            width: 80,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  spreadRadius: 2,
+                  blurRadius: 10,
+                  offset: Offset(0, 0),
                 ),
               ],
             ),
+            child: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: SfRadialGauge(
+                axes: <RadialAxis>[
+                  RadialAxis(
+                    minimum: 0,
+                    maximum: 100,
+                    showLabels: false,
+                    showTicks: false,
+                    startAngle: 270,
+                    endAngle: 270,
+                    axisLineStyle: AxisLineStyle(
+                      thickness: 1,
+                      color: Colors.white,
+                      thicknessUnit: GaugeSizeUnit.factor,
+                    ),
+                    pointers: <GaugePointer>[
+                      RangePointer(
+                        value: 100,
+                        width: 0.2,
+                        color: AppColors.circlecolor,
+                        pointerOffset: 0.1,
+                        cornerStyle: CornerStyle.bothFlat,
+                        sizeUnit: GaugeSizeUnit.factor,
+                      ),
+                      RangePointer(
+                        value: value,
+                        width: 0.2,
+                        color: AppColors.gradientcolor1,
+                        pointerOffset: 0.1,
+                        cornerStyle: CornerStyle.bothCurve,
+                        sizeUnit: GaugeSizeUnit.factor,
+                      ),
+                    ],
+                    annotations: <GaugeAnnotation>[
+                      GaugeAnnotation(
+                        widget: Text(
+                          '$value',
+                          style: TextStyles.Montserratbold2,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
-        SizedBox(width: 20),
-        Text(
-          label,
-          style: TextStyles.MontserratSemibold6,
-        ),
-      ],
+          const SizedBox(width: 20),
+          Text(
+            label,
+            style: TextStyles.MontserratSemibold6,
+          ),
+        ],
+      ),
     );
   }
 }

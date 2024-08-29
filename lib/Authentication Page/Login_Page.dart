@@ -89,20 +89,6 @@ class LoginPage_Screen extends StatelessWidget {
                     size: 30,
                   ),
                 ),
-                // SizedBox(height: 10),
-                // CustomButton(
-                //   text: 'Sign in',
-                //   backgroundColor: AppColors.contcolor1,
-                //   onTap: () {
-                //     // Handle tap
-                //   },
-                //   style: TextStyles.MontserratMedium3,
-                //   icon: Icon(
-                //     Icons.arrow_forward,
-                //     color: AppColors.whitecolor,
-                //     size: 30,
-                //   ),
-                // ),
                 SizedBox(height: 10),
               ],
             ),

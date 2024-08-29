@@ -5,6 +5,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
 
+import '../All_Custom_Faction/APIURL.dart';
+
 class addnewtoiletcontoller extends GetxController {
   var searchController = TextEditingController().obs;
   var addressController = TextEditingController();
@@ -20,7 +22,99 @@ class addnewtoiletcontoller extends GetxController {
   var markers = <Marker>{}.obs;
   RxBool showBottomSheet = false.obs;
 
+  var selectedImagePaths = <String>[].obs;
+
+  void addImagePath(String imagePath) {
+    selectedImagePaths.add(imagePath);
+    update();
+  }
+  void removeImagePath(String imagePath) {
+    selectedImagePaths.remove(imagePath);
+    update();
+  }
+
+// Update the updateToiletData method
+  void updateToiletData(BuildContext context) async {
+    List<String> amenities = [];
+
+    // Add selected amenities to the list
+    if (Wheelchair.value) amenities.add('Wheelchair accessible');
+    if (babyChangeStation.value) amenities.add('Baby change station');
+    if (soapAndPaperTowel.value) amenities.add('Soap and paper towel available');
+    if (freeWifi.value) amenities.add('Free wifi');
+
+    // Collect all the data
+    final data = {
+      'address': addressController.text,
+      'additional_notes': additionalDetailController.text,
+      'cleanliness': CleanlinessController.text,
+      'price_for_poop': double.tryParse(poopPriceController.text) ?? 0.0,
+      'price_for_pee': double.tryParse(peePriceController.text) ?? 0.0,
+      'price_for_shower': double.tryParse(showerPriceController.text) ?? 0.0,
+      'status': _getStatus(), // Determine the status
+      'amenities': amenities, // Add the amenities array here
+      'photos': selectedImagePaths.toList(),
+      'longitude': currentLocation.value.longitude,
+      'latitude': currentLocation.value.latitude,
+    };
+
+    // Print the data to the console for now
+    print(jsonEncode(data));
+
+    try {
+      await AllApiFaction().AddnewToilet(data, context);
+
+      // Clear all text fields and reset other state as needed
+      addressController.clear();
+      additionalDetailController.clear();
+      CleanlinessController.clear();
+      poopPriceController.clear();
+      peePriceController.clear();
+      showerPriceController.clear();
+      selectedImagePaths.clear();
+      markers.clear();
+      isAvailable.value = false;
+      isNotAvailable.value = false;
+      isUnderMaintenance.value = false;
+      Wheelchair.value = false;
+      babyChangeStation.value = false;
+      soapAndPaperTowel.value = false;
+      freeWifi.value = false;
+
+      // Optionally reset current location
+      currentLocation.value = LatLng(26.864608, 75.764692);
+      locationName.value = 'Current Location';
+      mapController.value?.animateCamera(
+        CameraUpdate.newLatLng(currentLocation.value),
+      );
+      markers.add(
+        Marker(
+          markerId: MarkerId('currentLocation'),
+          position: currentLocation.value,
+          draggable: true,
+          onDragEnd: (newPosition) {
+            fetchAddressDetails(newPosition);
+          },
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          infoWindow: InfoWindow(
+            title: locationName.value,
+          ),
+        ),
+      );
+    } catch (e) {
+      print('Error sending data: $e');
+    }
+  }
   // Checkbox states for different features
+
+  // Helper function to get the toilet status
+  String _getStatus() {
+    if (isAvailable.value) return 'Available';
+    if (isNotAvailable.value) return 'Not Available';
+    if (isUnderMaintenance.value) return 'Under Maintenance';
+    return 'Unknown';
+  }
+
   var Wheelchair = false.obs;
   var babyChangeStation = false.obs;
   var soapAndPaperTowel = false.obs;
@@ -71,7 +165,6 @@ class addnewtoiletcontoller extends GetxController {
     }
   }
 
-  final String _placesApiKey = 'AIzaSyDZWSWa5kSdIu0342P4VKoY2HTsBg3SNlE';
 
   void updateLocation(LatLng newLocation, [String? name]) {
     currentLocation.value = newLocation;
@@ -124,45 +217,13 @@ class addnewtoiletcontoller extends GetxController {
     }
   }
 
-  void selectLocation(String placeId) {
-    LatLng selectedLocation = LatLng(26.864608, 75.764692); // Placeholder value
-    updateLocation(selectedLocation, 'Selected Location');
-    searchController.value.clear();
-    suggestions.clear();
-  }
 
-  Future<void> fetchNearbyPlaces(LatLng position, String type) async {
-    final url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json'
-        '?location=${position.latitude},${position.longitude}'
-        '&radius=1500&type=$type&key=$_placesApiKey';
-
-    try {
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        if (data['results'] != null) {
-          for (var place in data['results']) {
-            final marker = Marker(
-              markerId: MarkerId(place['place_id']),
-              position: LatLng(place['geometry']['location']['lat'], place['geometry']['location']['lng']),
-              infoWindow: InfoWindow(title: place['name']),
-            );
-            markers.add(marker);
-          }
-        }
-      } else {
-        print('Failed to load places');
-      }
-    } catch (e) {
-      print('Error fetching nearby places: $e');
-    }
-  }
 
   @override
   void onInit() {
     super.onInit();
     // Fetch initial nearby places (e.g., hospitals) when the controller is initialized
-    fetchNearbyPlaces(currentLocation.value, 'hospital');
+    AllApiFaction().fetchNearbyPlaces(currentLocation.value, 'hospital',markers);
     // Add initial draggable marker
     markers.add(
       Marker(

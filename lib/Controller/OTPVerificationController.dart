@@ -23,18 +23,18 @@ class Otpverificationcontroller extends GetxController {
 
   Future<void> Verifyotp(BuildContext context) async {
     final otp = mpinController.text.trim();
-    // if (otp.isEmpty) {
-    //   _showErrorDialog('Otp field is empty');
-    //   return;
-    // }
+    if (otp.isEmpty) {
+      _showErrorDialog('Otp field is empty');
+      return;
+    }
 
-              Get.offAllNamed('/Addprofile_Page');
+              // Get.offAllNamed('/Addprofile_Page');
 
-    // await AllApiFaction().confirmOtp(otp, context);
+    await AllApiFaction().confirmOtp(otp, context);
   }
 
   Future<void> resendotp(BuildContext context) async {
-    // await AllApiFaction().resendOtp();
+    await AllApiFaction().resendOtp();
   }
 
   void _showErrorDialog(String message) {

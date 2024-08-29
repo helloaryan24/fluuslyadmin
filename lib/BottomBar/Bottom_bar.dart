@@ -28,7 +28,7 @@ class BottomBar_Page extends StatelessWidget {
       bottomNavigationBar: BottomAppBar(
         color: AppColors.whitecolor,
         padding: EdgeInsets.all(0),
-        height: 50,
+        height: 55,
         child: Column(
           mainAxisSize: MainAxisSize.min, // Ensures the BottomAppBar takes minimal space
           children: [
@@ -38,7 +38,7 @@ class BottomBar_Page extends StatelessWidget {
               color: AppColors.gradientcolor2,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 25, right: 25,bottom: 5,top: 10,),
+              padding: const EdgeInsets.only(left: 25, right: 25,bottom: 5,top: 15,),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -75,13 +75,14 @@ class BottomBar_Page extends StatelessWidget {
       child: Obx(() {
         return ColorFiltered(
           colorFilter: ColorFilter.mode(
-            controller.selectedIndex.value == index ? AppColors.gradientcolor2 : Colors.transparent,
+            controller.selectedIndex.value == index ? AppColors.gradientcolor1.withOpacity(0.7)
+            : Colors.transparent,
             BlendMode.srcATop,
           ),
           child: Image.asset(
             assetImage,
-            height: 25,
-            width: 25,
+            height: 28,
+            width: 28,
           )
         );
       }),

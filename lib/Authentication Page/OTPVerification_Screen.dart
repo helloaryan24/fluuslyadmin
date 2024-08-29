@@ -81,7 +81,7 @@ class OtpverificationScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 GestureDetector(onTap: (){
-                  // controller.resendotp(context);
+                  controller.resendotp(context);
 
                 },
                   child: Column(

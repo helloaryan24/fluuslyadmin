@@ -50,7 +50,7 @@ dependencies:
   flutter_rating_native: ^0.0.2
   intl: ^0.19.0
   syncfusion_flutter_gauges:
-
+  permission_handler: ^10.2.0
 
 dev_dependencies:
   flutter_test:

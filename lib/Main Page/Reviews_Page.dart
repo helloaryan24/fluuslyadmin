@@ -33,7 +33,14 @@ class Reviews_Page extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: AppColors.greycolor.withOpacity(0.2),
+                          gradient: LinearGradient(
+                            colors: [
+                              AppColors.gradientcolor1.withOpacity(0.4),
+                              AppColors.gradientcolor2.withOpacity(0.4),
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         padding: const EdgeInsets.all(10),
@@ -89,7 +96,7 @@ class Reviews_Page extends StatelessWidget {
                                         Spacer(),
                                         Text(
                                           '${review['date']}',
-                                          style: TextStyles.MontserratRegular2,
+                                          style: TextStyles.MontserratRegular7,
                                         ),
                                       ],
                                     ),

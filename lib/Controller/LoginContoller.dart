@@ -20,24 +20,17 @@ class Logincontoller extends GetxController {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
 
-              Get.toNamed('/Otpverification_Screen');
 
-
-    // if (email.isEmpty || password.isEmpty) {
-    //   _showDialog('All fields are required!');
-    // } else if (!EmailValidator.validate(email)) {
-    //   _showDialog('Please enter a valid email address!');
-    // } else if (password.length < 8) {
-    //   _showDialog('Password must be at least 8 characters long!');
-    // }
-    // else if (!containsUppercaseLetter(password)) {
-    //   _showDialog('Password must contain at least one uppercase letter!');
-    // } else if (!containsSpecialCharacter(password)) {
-    //   _showDialog('Password must contain at least one special character!');
-    // }
-    // else {
-    //   await AllApiFaction().loginin(email, password);
-    // }
+    if (email.isEmpty || password.isEmpty) {
+      _showDialog('All fields are required!');
+    } else if (!EmailValidator.validate(email)) {
+      _showDialog('Please enter a valid email address!');
+    } else if (password.length < 8) {
+      _showDialog('Password must be at least 8 characters long!');
+    }
+    else {
+      await AllApiFaction().loginin(email, password);
+    }
   }
 
   void _showDialog(String message) {

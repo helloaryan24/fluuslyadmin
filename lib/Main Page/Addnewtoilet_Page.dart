@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fluuslyadmin/All_Custom_Faction/Colors.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../All_Custom_Faction/All_Widget.dart';
 import '../All_Custom_Faction/Image.dart';
@@ -10,7 +13,13 @@ import '../Controller/addnewtoiletcontoller.dart';
 
 class Addnewtoilet_Page extends StatelessWidget {
   final addnewtoiletcontoller controller = Get.put(addnewtoiletcontoller());
-
+  Future<void> _showCamera(BuildContext context) async {
+    final pickedFile =
+     await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      controller.addImagePath(pickedFile.path);
+    }
+  }
   void _showMapDialog(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -63,15 +72,18 @@ class Addnewtoilet_Page extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).unfocus();
+
     return Scaffold(
       backgroundColor: AppColors.whitecolor,
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: AppColors.gradientcolor1,title: Text("Add New toilet", style: TextStyles.Montserratbold11),),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 10),
+        padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Add new toilet', style: TextStyles.Montserratbold),
-            SizedBox(height: 50),
             Container(
               height: 180,
               width: double.infinity,
@@ -84,17 +96,92 @@ class Addnewtoilet_Page extends StatelessWidget {
                 children: [
                   Image.asset(Images.wclogo),
                   SizedBox(height: 10),
-                  Container(
-                    height: 30,
-                    width: 150,
-                    alignment: Alignment.center,
-                    child: Text('Promote my business', style: TextStyles.Montserratbold5),
-                    decoration: BoxDecoration(
-                      color: AppColors.gradientcolor2,
-                      borderRadius: BorderRadius.circular(5),
+                  GestureDetector(
+                    onTap: (){
+                      _showCamera(context); // Open the camera
+                    },
+                    child: Container(
+                      height: 30,
+                      width: 150,
+                      alignment: Alignment.center,
+                      child: Text('Promote my business', style: TextStyles.Montserratbold5),
+                      decoration: BoxDecoration(
+                        color: AppColors.gradientcolor2,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
                     ),
                   ),
                 ],
+              ),
+            ),
+            SizedBox(height: 20),
+            Obx(
+                  () =>  Container(
+               height: controller.selectedImagePaths.isEmpty ?  0 : 120 , // Set the height of the container
+              width: double.infinity, // Keep the width to fill the screen
+              // color: Colors.red,
+              child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 1, // Since height is 30, only one item per row
+                    crossAxisSpacing: 0, // Space between items
+                    mainAxisSpacing: 0,  // Space between items
+                    childAspectRatio: 1, // Set aspect ratio to 1 for square items
+                  ),
+                  scrollDirection: Axis.horizontal, // Enable horizontal scrolling
+                  itemCount: controller.selectedImagePaths.length,
+                  itemBuilder: (context, index) {
+                    String imagePath = controller.selectedImagePaths[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Container(
+                        // height: 50, // Set height of individual items
+                        // width: 50, // Set width of individual items
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            image: FileImage(File(imagePath)),
+                            fit: BoxFit.cover,
+                          ),
+                          border: Border.all(
+                            width: 2,
+                            color: Colors.white,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.gradientcolor1.withOpacity(0.3),
+                              spreadRadius: 1,
+                              blurRadius: 5,
+                              blurStyle: BlurStyle.outer,
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(2.0), // Adjusted padding
+                          child: Align(
+                            alignment: Alignment.topRight,
+                            child: GestureDetector(
+                              onTap: () {
+                                controller.removeImagePath(imagePath);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                                child: Icon(
+                                  Icons.delete,
+                                  size: 15, // Adjusted size for smaller delete icon
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
             SizedBox(height: 20),
@@ -138,7 +225,6 @@ class Addnewtoilet_Page extends StatelessWidget {
               ],
             ),
             SizedBox(height: 30),
-
             GestureDetector(
               onTap: () => _showMapDialog(context),
               child: Container(
@@ -152,7 +238,6 @@ class Addnewtoilet_Page extends StatelessWidget {
                 ),
               ),
             ),
-
             SizedBox(height: 30),
             Text('Description', style: TextStyles.MontserratMedium5),
             SizedBox(height: 20),
@@ -376,30 +461,15 @@ class Addnewtoilet_Page extends StatelessWidget {
               ),
             ),
             SizedBox(height: 30),
-            Row(
-              children: [
-                Expanded(
-                  child: CustomButton4(
-                    style: TextStyles.Montserratbold10,
-                    backgroundColor: AppColors.whitecolor,
-                    onTap: () {
-                      // Get.toNamed('/Businessdetails_Page');
-                    },
-                    text: 'Edit',
-                  ),
-                ),
-                SizedBox(width: 20),
-                Expanded(
-                  child: CustomButton4(
-                    style: TextStyles.Montserratbold1,
-                    backgroundColor: AppColors.gradientcolor2,
-                    onTap: () {
-                      Get.back();
-                    },
-                    text: 'Update',
-                  ),
-                ),
-              ],
+            CustomButton4(
+              style: TextStyles.Montserratbold1,
+              backgroundColor: AppColors.gradientcolor2,
+              onTap: () {
+                controller.updateToiletData(context);
+                FocusScope.of(context).unfocus();
+
+              },
+              text: 'Update',
             ),
           ],
         ),
@@ -436,10 +506,14 @@ Widget _buildActionButton({
         child: Text(
           label,
           style: TextStyles.Montserratbold5.copyWith(color: AppColors.whitecolor)
-        ,
+          ,
         ),
       ),
     ),
   );
 }
+
+
+
+
 
