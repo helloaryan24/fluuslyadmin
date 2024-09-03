@@ -10,6 +10,8 @@ import '../All_Custom_Faction/All_Widget.dart';
 import '../All_Custom_Faction/Image.dart';
 import '../All_Custom_Faction/TextStyle.dart';
 import '../Controller/addnewtoiletcontoller.dart';
+import '../testing.dart';
+import 'Google_map.dart';
 
 class Addnewtoilet_Page extends StatelessWidget {
   final addnewtoiletcontoller controller = Get.put(addnewtoiletcontoller());
@@ -20,59 +22,8 @@ class Addnewtoilet_Page extends StatelessWidget {
       controller.addImagePath(pickedFile.path);
     }
   }
-  void _showMapDialog(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.all(0),
-          content: Container(
-            width: double.infinity,
-            height: 300,
-            child: Obx(() {
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: GoogleMap(
-                  initialCameraPosition: CameraPosition(
-                    target: controller.currentLocation.value,
-                    zoom: 15,
-                  ),
-                  myLocationEnabled: true,
-                  myLocationButtonEnabled: false,
-                  zoomControlsEnabled: true,
-                  markers: Set<Marker>.of(controller.markers),
-                  onMapCreated: (GoogleMapController gMapController) {
-                    controller.mapController.value = gMapController;
-                  },
-                  onTap: (LatLng position) {
-                    controller.fetchAddressDetails(position);
-                  },
-                ),
-              );
-            }),
-          ),
-          backgroundColor: AppColors.whitecolor,
-          actions: [
-            SizedBox(height: 10),
-            _buildActionButton(
-              label: 'Ok',
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              isPrimary: true,
-              screenWidth: screenWidth,
-              screenHeight: screenHeight,
-            ),
-          ],
-        );
-      },
-    );
-  }
   @override
   Widget build(BuildContext context) {
-    FocusScope.of(context).unfocus();
 
     return Scaffold(
       backgroundColor: AppColors.whitecolor,
@@ -209,29 +160,33 @@ class Addnewtoilet_Page extends StatelessWidget {
                       controller: controller.addressController,
                       keyboardType: TextInputType.emailAddress,
                       onChanged: (query) {},
+                      readOnly: true
+
                     ),
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 30),
-            Row(
-              children: [
-                Expanded(child: Divider(color: AppColors.greycolor)),
-                SizedBox(width: 10),
-                Text("Or you can", style: TextStyles.MontserratRegular4),
-                SizedBox(width: 10),
-                Expanded(child: Divider(color: AppColors.greycolor)),
-              ],
-            ),
+            // SizedBox(height: 30),
+            // Row(
+            //   children: [
+            //     Expanded(child: Divider(color: AppColors.greycolor)),
+            //     SizedBox(width: 10),
+            //     Text("Or you can", style: TextStyles.MontserratRegular4),
+            //     SizedBox(width: 10),
+            //     Expanded(child: Divider(color: AppColors.greycolor)),
+            //   ],
+            // ),
             SizedBox(height: 30),
             GestureDetector(
-              onTap: () => _showMapDialog(context),
+              onTap: (){
+                Get.to(() => MapScreen());
+              },
               child: Container(
-                height: 30,
-                width: 200,
+                height: 50,
+                width: double.infinity,
                 alignment: Alignment.center,
-                child: Text('Selected location on the map', style: TextStyles.Montserratbold5),
+                child: Text('📍Selected location on the Map', style: TextStyles.MontserratRegular7),
                 decoration: BoxDecoration(
                   color: AppColors.gradientcolor2,
                   borderRadius: BorderRadius.circular(5),
@@ -260,7 +215,7 @@ class Addnewtoilet_Page extends StatelessWidget {
                     SizedBox(height: 5),
                     buildInputField2(
                       hintText: "",
-                      controller: controller.CleanlinessController,
+                      controller: controller.cleanlinessController,
                       keyboardType: TextInputType.emailAddress,
                       onChanged: (query) {},
                     ),
@@ -275,7 +230,7 @@ class Addnewtoilet_Page extends StatelessWidget {
                         activeColor: AppColors.whitecolor,
                         checkColor: AppColors.blackcolor,
                         title: Text('Wheelchair accessible', style: TextStyles.MontserratRegular7),
-                        value: controller.Wheelchair.value,
+                        value: controller.wheelchair.value,
                         onChanged: (value) {
                           controller.toggleWheelchair();
                         },
@@ -478,40 +433,6 @@ class Addnewtoilet_Page extends StatelessWidget {
   }
 }
 
-Widget _buildActionButton({
-  required String label,
-  required VoidCallback onTap,
-  bool isPrimary = false,
-  required double screenWidth,
-  required double screenHeight,
-}) {
-  return Padding(
-    padding: EdgeInsets.symmetric(
-      horizontal: screenWidth * 0.04,
-      vertical: screenHeight * 0.02,
-    ),
-    child: Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [AppColors.gradientcolor1, AppColors.gradientcolor2]
-          ,
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: TextButton(
-        onPressed: onTap,
-        child: Text(
-          label,
-          style: TextStyles.Montserratbold5.copyWith(color: AppColors.whitecolor)
-          ,
-        ),
-      ),
-    ),
-  );
-}
 
 
 

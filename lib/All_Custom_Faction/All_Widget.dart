@@ -380,6 +380,32 @@ Widget buildInputField1({
   );
 }
 
+Widget buildInputField2({
+  required String hintText,
+  required TextEditingController controller,
+  TextInputType keyboardType = TextInputType.text,
+  bool obscureText = false,
+  TextInputAction? textInputAction,
+  FocusNode? focusNode,
+  FocusNode? nextFocusNode,
+  Function(String)? onChanged,
+  int? maxLength,
+  List<TextInputFormatter>? inputFormatters,
+  bool readOnly = false, // Added parameter
+}) {
+  return InputField(
+    hintText: hintText,
+    controller: controller,
+    keyboardType: keyboardType,
+    obscureText: obscureText,
+    textInputAction: textInputAction,
+    focusNode: focusNode,
+    nextFocusNode: nextFocusNode,
+    onChanged: onChanged,
+    inputFormatters: inputFormatters,
+    readOnly: readOnly, // Pass parameter
+  );
+}
 class InputField extends StatefulWidget {
   final String hintText;
   final TextEditingController controller;
@@ -390,6 +416,7 @@ class InputField extends StatefulWidget {
   final FocusNode? nextFocusNode;
   final Function(String)? onChanged;
   final List<TextInputFormatter>? inputFormatters;
+  final bool readOnly; // Added property
 
   const InputField({
     Key? key,
@@ -402,6 +429,7 @@ class InputField extends StatefulWidget {
     this.nextFocusNode,
     this.onChanged,
     this.inputFormatters,
+    this.readOnly = false, // Default value
   }) : super(key: key);
 
   @override
@@ -434,6 +462,7 @@ class _InputFieldState extends State<InputField> {
         cursorColor: AppColors.blackcolor,
         style: TextStyles.MontserratMedium,
         inputFormatters: widget.inputFormatters,
+        readOnly: widget.readOnly, // Added this line
         decoration: InputDecoration(
           filled: true,
           fillColor: AppColors.textfiledcolor,
@@ -467,31 +496,6 @@ class _InputFieldState extends State<InputField> {
       ),
     );
   }
-}
-
-Widget buildInputField2({
-  required String hintText,
-  required TextEditingController controller,
-  TextInputType keyboardType = TextInputType.text,
-  bool obscureText = false,
-  TextInputAction? textInputAction,
-  FocusNode? focusNode,
-  FocusNode? nextFocusNode,
-  Function(String)? onChanged,
-  int? maxLength,
-  List<TextInputFormatter>? inputFormatters,
-}) {
-  return InputField(
-    hintText: hintText,
-    controller: controller,
-    keyboardType: keyboardType,
-    obscureText: obscureText,
-    textInputAction: textInputAction,
-    focusNode: focusNode,
-    nextFocusNode: nextFocusNode,
-    onChanged: onChanged,
-    inputFormatters: inputFormatters,
-  );
 }
 
 class SupportOption extends StatelessWidget {

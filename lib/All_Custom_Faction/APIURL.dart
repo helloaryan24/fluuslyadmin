@@ -359,50 +359,32 @@ class AllApiFaction extends GetxController {
     }
   }
 
-  Future<void> AddnewToilet(Map<String, dynamic> data , BuildContext context) async {
-    Get.dialog(
-      lottieAnimation(Get.context!),
-      barrierDismissible: false, // Prevent dismissing by tapping outside
-    );
 
+  Future<void> AddNewToilet(Map<String, dynamic> data, BuildContext context) async {
     try {
       final response = await http.post(
         Uri.parse(ApiUrls.toiletsaddapi),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: {'Content-Type': 'application/json'},
         body: jsonEncode(data),
       );
 
+      print('API URL: ${ApiUrls.toiletsaddapi}');
+      print('Request Body: ${jsonEncode(data)}');
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
       if (response.statusCode == 201) {
         print('Data successfully sent to the server');
-        Get.back(); // Close the loading dialog
-        FocusScope.of(context).unfocus();
-        showSuccessSnackbar("Add new Toilet",
-            icon: Icons.check_circle,
-            iconColor: Colors.green,
-            containerColor: Colors.green);
-
-      } else {
-        showSuccessSnackbar('Failed add new Toilet, Try Again',
-            icon: Icons.error_outline,
-            iconColor: Colors.red,
-            containerColor: Colors.red);
-        Get.back(); // Close the loading dialog
-        FocusScope.of(context).unfocus();
+        showSuccessSnackbar("Add new Toilet", icon: Icons.check_circle, iconColor: Colors.green, containerColor: Colors.green);
 
       }
     } catch (e) {
-      showSuccessSnackbar('Failed add Toilet',
-          icon: Icons.error_outline,
-          iconColor: Colors.red,
-          containerColor: Colors.red);
-      Get.back(); // Close the loading dialog
-      FocusScope.of(context).unfocus();
-
+      print('Failed to add Toilet');
+      print('Error Details: $e');
+      showErrorSnackbar('Failed to add Toilet');
     }
-
   }
+
 
   void _showErrorDialog(String message) {
     Get.dialog(
